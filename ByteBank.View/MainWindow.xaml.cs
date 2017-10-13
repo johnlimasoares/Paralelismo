@@ -81,7 +81,7 @@ namespace ByteBank.View
         private async Task<string[]> ConsolidarContas(IEnumerable<ContaCliente> contas, IProgress<string> reportadorDeProgresso, CancellationToken ct)
         {
             var tasks = contas.Select(conta =>
-                Task.Factory.StartNew(() =>
+                Task.Factory.StartNew(() => /*inicia novas tarefas para cada conta. A factory cogerencia as tarefas entre os nucleos do processador*/
                 {
                     ct.ThrowIfCancellationRequested();
 
@@ -94,7 +94,7 @@ namespace ByteBank.View
                 }, ct)
             );
 
-            return await Task.WhenAll(tasks);
+            return await Task.WhenAll(tasks); /*Só retorna quando todos os processos terminarem*/
         }
 
         private void LimparView()
